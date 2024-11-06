@@ -9,13 +9,11 @@ import java.util.Scanner;
 public class Entrada {
     public static void main(String[] args) {
 
-        //creacion de coches.dat
         GestorCoches gestorCoches = new GestorCoches();
         ArrayList<Coche> coches = gestorCoches.verificarFile("src/main/java/resources/coches.dat");
 
         int opcion = 0;
         Scanner sc = new Scanner(System.in);
-
 
         do {
             System.out.println("1. Añadir coche");
@@ -23,7 +21,8 @@ public class Entrada {
             System.out.println("3. Consultar coche por id");
             System.out.println("4. Listar coches");
             System.out.println("5. Salir");
-            System.out.println("Escocge una opcion");
+            System.out.println("6. Exportar a .csv");
+            System.out.println("Escoge una opción:");
             opcion = sc.nextInt();
 
             switch (opcion) {
@@ -38,38 +37,54 @@ public class Entrada {
                     System.out.println("Introduce el color: ");
                     String color = sc.next();
 
-                    //instancia de coche
+                    // Instancia de coche
                     Coche nuevoCoche = new Coche(matricula, marca, modelo, color);
 
-                    //llamada del metodo
-                    gestorCoches.addCoche(nuevoCoche);
-
-
-                    System.out.println("Coche añadido correctamente: " +nuevoCoche);
+                    // Llamada del método
+                    if (gestorCoches.addCoche(nuevoCoche)){
+                        System.out.println("Coche añadido correctamente: " + nuevoCoche);
+                    } else {
+                        System.out.println("El coche no se añadió correctamente ya que la matrícula ya existe.");
+                    }
                     break;
+
                 case 2:
                     System.out.println("Introduce un id para poder borrar un coche: ");
                     int idCocheBorrado = sc.nextInt();
                     gestorCoches.borrarCoche(idCocheBorrado);
                     break;
+
                 case 3:
                     System.out.println("Introduce un id para consultar un coche: ");
                     int idConsulta = sc.nextInt();
                     gestorCoches.consultarCocheId(idConsulta);
                     break;
+
                 case 4:
-                    //metodoListar
+                    gestorCoches.listarCoches();
+                    break;
+
                 case 5:
-                    //metodoSalir
+                    // Guardar coches en el fichero y terminar el programa
+                    gestorCoches.guardarCochesFichero("src/main/java/resources/coches.dat");
+                    gestorCoches.leerFichero("src/main/java/resources/coches.dat");
+                    System.out.println("Coches guardados correctamente.");
+                    break;
+
+                case 6:
+                    // Exportar a archivo CSV y salir
+                    gestorCoches.exportarCSV("src/main/java/resources/archivo.csv");
+                    System.out.println("Coches exportados a CSV correctamente.");
                     break;
 
                 default:
-                    System.out.println("Opcion no valida, por favor escoja entre 1-5.");
-
+                    System.out.println("Opción no válida, por favor elija entre 1-6.");
             }
-        } while (opcion != 5);
-                sc.close();
 
+        } while (opcion != 6);  // Terminamos el programa al elegir la opción 6
 
+        sc.close();
+        System.out.println("El programa ha terminado.");
     }
+
 }

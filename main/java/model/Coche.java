@@ -41,4 +41,12 @@ public class Coche implements Serializable {
                 ", color='" + color + '\'' +
                 '}';
     }
+    public void mostrarDatosCoche(){
+        System.out.println("serialVersionUID = " + serialVersionUID);
+        System.out.println("id = " + id);
+        System.out.println("matricula = " + matricula);
+        System.out.println("marca = " + marca);
+        System.out.println("modelo = " + modelo);
+        System.out.println("color = " + color);
+    }
 }
